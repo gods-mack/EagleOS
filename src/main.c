@@ -10,7 +10,10 @@ int main(struct multiboot *mboot_ptr)
     // Write out a sample string
     monitor_write("\n");
     monitor_write("                        Welcome to the my OS world!                             \n");
-    monitor_write("\nmain baap hu!",0,5);
+    monitor_write("\nApplications",0,5);
+    monitor_write("\n> Calculator",0,15);
+    monitor_write("\n> Data/Time",0,15);
+    monitor_write("\n> Greeting",0,15);
     
 
     
