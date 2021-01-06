@@ -4,10 +4,12 @@
 #include "isr.h"
 
 
+
 void isr_handler(registers_t reg) {
 
-	monitor_write("interrupt recieved!",0,15);
-	monitor_write_dec(reg.int_no);
+	monitor_write("interrupt recieved! ",0,15);
+	monitor_write(exception_messages[(int)reg.int_no],0,4);
+//	monitor_write_dec(reg.int_no);
 	monitor_write("\n",0,15);
 
 }

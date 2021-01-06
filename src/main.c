@@ -17,8 +17,11 @@ int main(struct multiboot *mboot_ptr) {
     monitor_write("\n> Date/Time",0,15);
     monitor_write("\n> Greeting\n",0,15);
 
+ 	//int num = 10/0; // devode by zero exception
+
     asm volatile ("int $0x3");
 	asm volatile ("int $0x4");
+	asm volatile ("int $0x0");
     //monitor_write_dec(2423);
   //  monitor_write("");
     

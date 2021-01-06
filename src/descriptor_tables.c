@@ -138,6 +138,16 @@ static void init_gdt() {
 }
 
 
+
+/* This is a very repetitive function... it's not hard, it's
+*  just annoying. As you can see, we set the first 32 entries
+*  in the IDT to the first 32 ISRs. We can't use a for loop
+*  for this, because there is no way to get the function names
+*  that correspond to that given entry. We set the access
+*  flags to 0x8E. This means that the entry is present, is
+*  running in ring 0 (kernel level), and has the lower 5 bits
+*  set to the required '14', which is represented by 'E' in
+*  hex. */
 static void init_idt()
 {
     idt_ptr.limit = sizeof(idt_entry_t) * 256 -1;
@@ -193,4 +203,6 @@ static void idt_set_gate(u8int num, u32int base, u16int sel, u8int flags)
     // It sets the interrupt gate's privilege level to 3.
     idt_entries[num].flags   = flags /* | 0x60 */;
 }
+
+
 
