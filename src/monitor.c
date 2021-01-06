@@ -203,9 +203,13 @@ void monitor_write(char *c, u8int bg_colour, u8int fg_colour)
 void monitor_write_hex(u32int n)
 {
     // TODO: implement this yourself!
+    
 }
 
 void monitor_write_dec(u32int n)
 {
     // TODO: implement this yourself!
+
+    char *num;
+    
 }

@@ -39,6 +39,9 @@ void memcpy(u8int *dest, const u8int *src, u32int len)
 void memset(u8int *dest, u8int val, u32int len)
 {
     // TODO: implement this yourself!
+    while(len--) {
+        *(dest++) = val;
+    }
 }
 
 // Compare two strings. Should return -1 if 
@@ -46,6 +49,7 @@ void memset(u8int *dest, u8int val, u32int len)
 int strcmp(char *str1, char *str2)
 {
     // TODO: implement this yourself!
+
 }
 
 // Copy the NULL-terminated string src into dest, and
@@ -53,6 +57,15 @@ int strcmp(char *str1, char *str2)
 char *strcpy(char *dest, const char *src)
 {
     // TODO: implement this yourself!
+   // if(src == NULL) return NULL;
+
+    char *str = dest;
+
+    while(*src) {
+        *(dest++) = *(src++);
+    }
+    *dest = '\0';
+    return str;
 }
 
 // Concatenate the NULL-terminated string src onto
