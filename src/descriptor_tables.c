@@ -155,6 +155,29 @@ static void init_idt()
 
     memset(&idt_entries, 0, sizeof(idt_entry_t)*256);
 
+
+
+    /* Normally, IRQs 0 to 7 are mapped to entries 8 to 15. This
+*  is a problem in protected mode, because IDT entry 8 is a
+*  Double Fault! Without remapping, every time IRQ0 fires,
+*  you get a Double Fault Exception, which is NOT actually
+*  what's happening. We send commands to the Programmable
+*  Interrupt Controller (PICs - also called the 8259's) in
+*  order to make IRQ0 to 15 be remapped to IDT entries 32 to
+*  47 */
+    // Remap the irq table.
+    outb(0x20, 0x11);
+    outb(0xA0, 0x11);
+    outb(0x21, 0x20);
+    outb(0xA1, 0x28);
+    outb(0x21, 0x04);
+    outb(0xA1, 0x02);
+    outb(0x21, 0x01);
+    outb(0xA1, 0x01);
+    outb(0x21, 0x0);
+    outb(0xA1, 0x0);
+
+
     idt_set_gate( 0, (u32int)isr0 , 0x08, 0x8E); // Divide by zero
     idt_set_gate( 1, (u32int)isr1 , 0x08, 0x8E); // Debug Exception
     idt_set_gate( 2, (u32int)isr2 , 0x08, 0x8E); // Non Maskable Interrupt Exception
@@ -188,8 +211,27 @@ static void init_idt()
     idt_set_gate(30, (u32int)isr30, 0x08, 0x8E);
     idt_set_gate(31, (u32int)isr31, 0x08, 0x8E);
 
+    idt_set_gate(32, (u32int)irq0, 0x08, 0x8E);
+    idt_set_gate(33, (u32int)irq1, 0x08, 0x8E);
+    idt_set_gate(34, (u32int)irq2, 0x08, 0x8E);
+    idt_set_gate(35, (u32int)irq3, 0x08, 0x8E);
+    idt_set_gate(36, (u32int)irq4, 0x08, 0x8E);
+    idt_set_gate(37, (u32int)irq5, 0x08, 0x8E);
+    idt_set_gate(38, (u32int)irq6, 0x08, 0x8E);
+    idt_set_gate(39, (u32int)irq7, 0x08, 0x8E);
+    idt_set_gate(40, (u32int)irq8, 0x08, 0x8E);
+    idt_set_gate(41, (u32int)irq9, 0x08, 0x8E);
+    idt_set_gate(42, (u32int)irq10, 0x08, 0x8E);
+    idt_set_gate(43, (u32int)irq11, 0x08, 0x8E);
+    idt_set_gate(44, (u32int)irq12, 0x08, 0x8E);
+    idt_set_gate(45, (u32int)irq13, 0x08, 0x8E);
+    idt_set_gate(46, (u32int)irq14, 0x08, 0x8E);
+    idt_set_gate(47, (u32int)irq15, 0x08, 0x8E);
+
     idt_flush((u32int)&idt_ptr);
 }
+
+
 
 static void idt_set_gate(u8int num, u32int base, u16int sel, u8int flags)
 {

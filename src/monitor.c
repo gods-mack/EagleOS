@@ -78,12 +78,16 @@ void monitor_put(char c, u8int bg_colour, u8int fg_colour)
     u8int  attributeByte = (backColour << 4) | (foreColour & 0x0F);
     // The attribute byte is the top 8 bits of the word we have to send to the
     // VGA board.
+    u16int blank = 0x20 /* space */ | (attributeByte << 8);
+
     u16int attribute = attributeByte << 8;
     u16int *location;
 
     // Handle a backspace, by moving the cursor back one space
     if (c == 0x08 && cursor_x)
     {
+        location = video_memory + (cursor_y*80 + cursor_x)-1;
+        *location = blank | attribute;
         cursor_x--;
     }
 
@@ -203,6 +207,50 @@ void monitor_write(char *c, u8int bg_colour, u8int fg_colour)
 void monitor_write_hex(u32int n)
 {
     // TODO: implement this yourself!
+    char num[32];
+    int i = 0;
+
+    while(n > 0) {
+        int res = n%16;
+        if(res > 9) {
+            switch(res) {
+                case 10:
+                    num[i++] = 'A';
+                    break;
+                case 11:
+                    num[i++] = 'B';
+                    break;
+                case 12:
+                    num[i++] = 'C';
+                    break;
+                case 13:
+                    num[i++] = 'D';
+                    break;  
+                case 14:
+                    num[i++] = 'E';
+                    break;
+                case 15:
+                    num[i++] = 'F';
+                    break;
+            }
+        }
+        else{ 
+            num[i++] = '0' + res;
+        }
+        n = n/16;
+    }
+
+     // reverse the string
+    int l = 0, r = i-1;
+    while( r > l) {
+        char tmp = num[l];
+        num[l] = num[r];
+        num[r] = tmp;
+        l++; r--;
+    }
+
+    monitor_write("0x",0,15);
+    monitor_write(num,0,15);
     
 }
 
@@ -210,6 +258,23 @@ void monitor_write_dec(u32int n)
 {
     // TODO: implement this yourself!
 
-    char *num;
+    char num[32];
+    int i = 0;
+
+    while(n > 0) {
+        num[i++] = '0' + n%10;
+        n = n/10;
+    }
+
+    // reverse the string
+    int l = 0, r = i-1;
+    while( r > l) {
+        char tmp = num[l];
+        num[l] = num[r];
+        num[r] = tmp;
+        l++; r--;
+    } 
+
+    monitor_write(num,0,7);
     
 }

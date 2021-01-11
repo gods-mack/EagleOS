@@ -1,4 +1,4 @@
-SOURCES=boot.o main.o monitor.o common.o descriptor_tables.o isr.o interrupt.o gdt.o
+SOURCES=boot.o main.o monitor.o common.o descriptor_tables.o isr.o interrupt.o timer.o kbd.o gdt.o
 
 CC=gcc 
 CFLAGS=-nostdlib -nostdinc -fno-builtin -fno-stack-protector -m32

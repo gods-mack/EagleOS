@@ -7,7 +7,7 @@
 [GLOBAL gdt_flush]    ; Allows the C code to call gdt_flush().
 
 gdt_flush:
-    mov eax, [esp+4]  ; Get the pointer to the GDT, passed as a parameter.
+    mov eax, [esp+4]  ; Get the pointer to the GDT, passed as a parameter.Software
     lgdt [eax]        ; Load the new GDT pointer
 
     mov ax, 0x10      ; 0x10 is the offset in the GDT to our data segment

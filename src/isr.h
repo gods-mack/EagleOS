@@ -7,6 +7,25 @@
 
 #include "common.h"
 
+
+// A few defines to make life a little easier
+#define IRQ0 32
+#define IRQ1 33
+#define IRQ2 34
+#define IRQ3 35
+#define IRQ4 36
+#define IRQ5 37
+#define IRQ6 38
+#define IRQ7 39
+#define IRQ8 40
+#define IRQ9 41
+#define IRQ10 42
+#define IRQ11 43
+#define IRQ12 44
+#define IRQ13 45
+#define IRQ14 46
+#define IRQ15 47
+
 typedef struct registers {
 
 	u32int ds;   // Data segment selector
@@ -21,39 +40,11 @@ typedef struct registers {
 *  corresponds to each and every exception. We get the correct
 *  message by accessing like:
 *  exception_message[interrupt_number] */
-unsigned char *exception_messages[] =
-{
-    "#0 Division by zero exception",
-    "#1 Debug exception",
-    "#2 Non Maskable Interrupt",
-    "#3 Breakpoint Exception",
-    "#4 Into detected overflow exception",
-    "#5 out of bound exception",
-    "#6 invalid opcode exception",
-    "#7 No Coprocessor Exception",
-    "#8 double flault exception",
-    "#9 coprocessor segment overrun exception",
-    "#10 bad TSS exception",
-    "#11 segment not present exception",
-    "#12 stack flault exception",
-    "#13 general protection exception",
-    "#14 Page Fault exception",
-    "#15 unknown interrupt exception",
-    "#16 coprocessor Fault exception",
-    "#17 alignment check exception (486+)",
-    "#18 machine check exception",
+unsigned char *exception_messages[256];
 
-    "Reserved 19",
-    "Reserved 20 ",
-    "Reserved 21",
-    "Reserved 22",
-    "Reserved 23",
-    "Reserved 24",
-    "Reserved 25",
-    "Reserved 26",
-    "Reserved 27",
-    "Reserved 28",
-    "Reserved 28",
-    "Reserved 30",
-    "Reserved 31"
-};
+
+// Enables registration of callbacks for interrupts or IRQs.
+// For IRQs, to ease confusion, use the #defines above as the
+// first parameter.
+typedef void (*isr_t)(registers_t);
+void register_interrupt_handler(u8int n, isr_t handler);
