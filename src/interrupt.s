@@ -26,7 +26,6 @@
 
 ; This macro creates a stub for an IRQ - the first parameter is
 ; the IRQ number, the second is the ISR number it is remapped to.
-
 %macro IRQ 2
   global irq%1
   irq%1:
@@ -35,7 +34,7 @@
     push byte %2
     jmp irq_common_stub
 %endmacro
-
+        
 ISR_NOERRCODE 0
 ISR_NOERRCODE 1
 ISR_NOERRCODE 2
@@ -85,7 +84,6 @@ IRQ  13,    45
 IRQ  14,    46
 IRQ  15,    47
 
- 
 ; In isr.c
 extern isr_handler
 
@@ -117,8 +115,7 @@ isr_common_stub:
     sti
     iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
 
-
-    ; In isr.c
+; In isr.c
 extern irq_handler
 
 ; This is our common IRQ stub. It saves the processor state, sets
@@ -148,3 +145,6 @@ irq_common_stub:
     add esp, 8     ; Cleans up the pushed error code and pushed ISR number
     sti
     iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
+
+
+        
